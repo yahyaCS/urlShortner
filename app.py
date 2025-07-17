@@ -51,3 +51,35 @@ def create_short_url():
         "createdAt": created_at.isoformat() + "Z",
         "updatedAt": updated_at.isoformat() + "Z"
     }), 201
+
+@app.route('/shorten/<short_code>', methods=['GET'])
+def get_original_url(short_code):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, original_url, created_at, updated_at, access_count
+        FROM urls WHERE short_code = %s
+    """, (short_code,))
+    row = cursor.fetchone()
+
+    if not row:
+        cursor.close()
+        conn.close()
+        return jsonify(error="Short URL not found"), 404
+
+    id, original_url, created_at, updated_at, access_count = row
+
+    cursor.execute("""
+        UPDATE urls SET access_count = access_count + 1 WHERE short_code = %s
+    """, (short_code,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        "id": id,
+        "url": original_url,
+        "shortCode": short_code,
+        "createdAt": created_at.isoformat() + "Z",
+        "updatedAt": updated_at.isoformat() + "Z"
+    })
