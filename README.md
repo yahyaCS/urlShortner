@@ -32,6 +32,7 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
         ```sql
         CREATE DATABASE url_shortener;
         USE url_shortener;
+    
         CREATE TABLE urls (
             id INT AUTO_INCREMENT PRIMARY KEY,
             original_url TEXT NOT NULL,
@@ -50,23 +51,45 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
 
 ## API Endpoints
 
-* POST /shorten
-Create a new short URL
-Body: { "url": "https://long.url/path" }
+- **POST** `/shorten`  
+    Create a new short URL  
+  **Body:**  
 
-* GET /shorten/`shortCode`
-Retrieve the original URL
+  ```json
+  {
+    "url": "https://long.url/path"
+  }
 
-* PUT /shorten/`shortCode`
-Update the URL
-Body: { "url": "https://new.url/path" }
+- **GET** /shorten/`shortCode`  
+    Retrieve the original URL
 
-* DELETE /shorten/`shortCode`
+- **PUT** /shorten/`shortCode`  
+Update the URL  
+**Body:** 
+    ```json
+    { 
+        "url": "https://new.url/path" 
+    }
+
+- **DELETE** /shorten/`shortCode`   
 Delete the short URL
 
-* GET /shorten/`shortCode`/stats
+- **GET** /shorten/`shortCode`/stats    
 Get access statistics
 
-* GET /`shortCode`
+- **GET** /`shortCode`  
 Redirect to the original URL
+
+## Notes
+
+* All meaningful commits and code changes are on dev.
+
+* The main branch will remain clean, so reviewers see only this README here.
+
+* Feel free to switch between branches to view or update code and docs.
+
+Good luck reviewing, and thanks for taking a look!
+
+Muhammad Yahya  
+July 2025
 
