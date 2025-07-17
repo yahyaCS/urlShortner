@@ -1,6 +1,6 @@
 MYSQL_CONFIG = {
     'host': 'localhost',
-    'user': 'root',
-    'password': 'rootroot',
+    'user': 'user',
+    'password': 'password'
     'database': 'url_shortener'
 }
