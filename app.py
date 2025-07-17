@@ -89,6 +89,40 @@ def get_original_url(short_code):
         "updatedAt": updated_at.isoformat() + "Z"
     })
 
+@app.route('/shorten/<short_code>', methods=['PUT'])
+def update_url(short_code):
+    data = request.get_json()
+    if not data or 'url' not in data:
+        return jsonify(error="URL is required"), 400
+
+    new_url = data['url']
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("UPDATE urls SET original_url = %s WHERE short_code = %s", (new_url, short_code))
+    if cursor.rowcount == 0:
+        cursor.close()
+        conn.close()
+        return jsonify(error="Short URL not found"), 404
+
+    conn.commit()
+
+    cursor.execute("""
+        SELECT id, original_url, created_at, updated_at FROM urls WHERE short_code = %s
+    """, (short_code,))
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    id, original_url, created_at, updated_at = row
+    return jsonify({
+        "id": id,
+        "url": original_url,
+        "shortCode": short_code,
+        "createdAt": created_at.isoformat() + "Z",
+        "updatedAt": updated_at.isoformat() + "Z"
+    })
+
 @app.route('/shorten/<short_code>', methods=['DELETE'])
 def delete_url(short_code):
     conn = get_db()
