@@ -8,8 +8,8 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
 
 1. **Clone the repo**  
    ```bash
-   git clone https://github.com/yourusername/yourname-innovaxel-lastname.git
-   cd yourname-innovaxel-lastname
+   git clone https://github.com/yahyaCS/muhammad-innovaxel-yahya.git
+   cd muhammad-innovaxel-yahya
 
 2. **Set up the branches**    
     
