@@ -163,5 +163,27 @@ def get_stats(short_code):
         "accessCount": access_count
     })
 
+@app.route('/<short_code>')
+def redirect_to_original(short_code):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT original_url FROM urls WHERE short_code = %s", (short_code,))
+    row = cursor.fetchone()
+
+    if not row:
+        cursor.close()
+        conn.close()
+        return "Short URL not found", 404
+
+    original_url = row[0]
+
+    
+    cursor.execute("UPDATE urls SET access_count = access_count + 1 WHERE short_code = %s", (short_code,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(original_url)
+
 if __name__ == '__main__':
     app.run(debug=True)
