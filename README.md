@@ -15,6 +15,7 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
     
     * You should already be on main, containing only this file.
     * To work with the code, switch to the dev branch:
+
         ```bash
         git checkout dev
 
@@ -27,18 +28,18 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
     
     * Make sure MySQL is running
     * Create the database and table:
-    
-    ```sql
-    CREATE DATABASE url_shortener;
-    USE url_shortener;
-    CREATE TABLE urls (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        original_url TEXT NOT NULL,
-        short_code VARCHAR(10) NOT NULL UNIQUE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        access_count INT DEFAULT 0
-    );
+       
+        ```sql
+        CREATE DATABASE url_shortener;
+        USE url_shortener;
+        CREATE TABLE urls (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            original_url TEXT NOT NULL,
+            short_code VARCHAR(10) NOT NULL UNIQUE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            access_count INT DEFAULT 0
+        );
     
     * Update the MySQL credentials in `config.py`.
 
@@ -46,4 +47,26 @@ This is a simple RESTful API to shorten long URLs, built with Python, Flask, and
 
     ```bash
     python app.py
-    
+
+## API Endpoints
+
+* POST /shorten
+Create a new short URL
+Body: { "url": "https://long.url/path" }
+
+* GET /shorten/`shortCode`
+Retrieve the original URL
+
+* PUT /shorten/`shortCode`
+Update the URL
+Body: { "url": "https://new.url/path" }
+
+* DELETE /shorten/`shortCode`
+Delete the short URL
+
+* GET /shorten/`shortCode`/stats
+Get access statistics
+
+* GET /`shortCode`
+Redirect to the original URL
+
