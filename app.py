@@ -13,6 +13,11 @@ def get_db():
 def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
+@app.route('/')
+def home():
+    return "<h2>URL Shortener API is running!</h2><p>Use a tool like Postman to test the endpoints.</p>"
+
+
 @app.route('/shorten', methods=['POST'])
 def create_short_url():
     data = request.get_json()
@@ -123,3 +128,6 @@ def get_stats(short_code):
         "updatedAt": updated_at.isoformat() + "Z",
         "accessCount": access_count
     })
+
+if __name__ == '__main__':
+    app.run(debug=True)
